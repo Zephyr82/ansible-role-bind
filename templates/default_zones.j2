@@ -1,0 +1,36 @@
+// 
+// named.conf.default-zones
+//
+{{ ansible_managed | comment('c') }}
+
+// set root name server hints
+{% if bind_root_hints_file is defined %}
+zone "." {
+    type hint;
+    file "{{ bind_root_hints_file }}";
+};
+{% endif %}
+
+// be authoritative for the localhost forward and reverse zones, and for
+// broadcast zones as per RFC 1912
+
+{% if bind_default_zones is defined %}
+{% for zone in bind_default_zones %}
+{% if zone.default_type is not defined %}
+zone "{{ zone.name }}" {
+    type primary;
+    file "{{ zone.file_name }}";
+};
+{% elif zone.default_type == "ipv4-reverse-lookup" %}
+zone "{{ zone.name }}.in-addr.arpa" {
+    type primary;
+    file "{{ zone.file_name }}";
+};
+{% elif zone.default_type == "ipv6-reverse-lookup" %}
+zone "{{ zone.name }}.ip6.arpa" {
+    type primary;
+    file "{{ zone.file_name }}";
+};
+{% endif %}
+{% endfor %}
+{% endif %}

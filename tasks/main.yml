@@ -118,6 +118,11 @@
   include_tasks: zones.yml
   tags: bind
 
+- name: create default zones if they're not included with the bind installation
+  ansible.builtin.include_tasks:
+    file: default_zones.yml
+  when: ansible_os_family == "FreeBSD"
+
 - name: Main BIND config file
   template:
     src: etc_named.conf.j2

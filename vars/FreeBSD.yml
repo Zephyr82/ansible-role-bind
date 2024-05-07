@@ -20,6 +20,25 @@ bind_config: /usr/local/etc/namedb/named.conf
 bind_default_zone_files:
   - /usr/local/etc/namedb/named.conf.default-zones
 
+bind_default_zones:
+  - name: localhost
+    file_name: "/usr/local/etc/namedb/primary/localhost-forward.db"
+  - name: "127"
+    file_name: "/usr/local/etc/namedb/primary/localhost-reverse.db"
+    default_type: "ipv4-reverse-lookup"
+  - name: "255"
+    file_name: "/usr/local/etc/namedb/primary/empty.db"
+    default_type: "ipv4-reverse-lookup"
+  - name: "0"
+    file_name: "/usr/local/etc/namedb/primary/localhost-reverse.db"
+    default_type: "ipv6-reverse-lookup"
+  - name: "0"
+    file_name: "/usr/local/etc/namedb/primary/empty.db"
+    default_type: "ipv4-reverse-lookup"
+
+bind_root_hints_file: "/usr/local/etc/namedb/named.root"
+
+
 # Directory with run-time stuff
 bind_dir: /var/cache/named
 bind_conf_dir: "/usr/local/etc/namedb/"

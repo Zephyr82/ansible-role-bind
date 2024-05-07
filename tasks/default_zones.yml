@@ -1,0 +1,12 @@
+---
+- name: Create config file for the default zones include
+  ansible.builtin.template:
+    src: default_zones.j2
+    dest: "{{ item }}"
+    owner: "{{ bind_owner }}"
+    group: "{{ bind_group }}"
+    mode: "{{ bind_zone_file_mode}}"
+  with_items:
+    - "{{ bind_default_zone_files }}"
+  notify: reload bind
+  tags: bind
