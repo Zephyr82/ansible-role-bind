@@ -121,7 +121,7 @@
 - name: create default zones if they're not included with the bind installation
   ansible.builtin.include_tasks:
     file: default_zones.yml
-  when: ansible_os_family == "FreeBSD"
+  when: ansible_os_family == "FreeBSD" or (ansible_os_family == "Ubuntu" and ansible_distribution_major_version is version('26.04', '>='))
 
 - name: Main BIND config file
   template:
